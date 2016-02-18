@@ -5,10 +5,12 @@
  */
 package HomeGUI;
 
-import LinkingGUI.*;
-import SharingGUI.*;
-import SesameApp.*;
 import AccesGUI.*;
+import AccreditedClass.*;
+import LinkingGUI.*;
+import SesameApp.*;
+import SharingClass.*;
+import SharingGUI.*;
 
 import java.awt.Toolkit;
 import java.awt.event.WindowEvent;

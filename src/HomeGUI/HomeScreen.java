@@ -5,10 +5,13 @@
  */
 package HomeGUI;
 
-import LinkingGUI.*;
-import SharingGUI.*;
-import SesameApp.*;
 import AccesGUI.*;
+import AccreditedClass.*;
+import LinkingGUI.*;
+import SesameApp.*;
+import SharingClass.*;
+import SharingGUI.*;
+
 
 import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
@@ -25,9 +28,12 @@ public class HomeScreen extends javax.swing.JFrame {
     /**
      * Creates new form HomeScreen
      */
+    private SerialPortAccreditedInstruction serial_port_accredited = null;
+    
     public HomeScreen() {
         initComponents();
         owner_jLabel.setText("Proprietaire : " + "Lamine BA");
+        serial_port_accredited = new SerialPortAccreditedInstruction(115200);
         this.clock();
     }
 
@@ -116,24 +122,24 @@ public class HomeScreen extends javax.swing.JFrame {
         );
 
         jLabel2.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
-        jLabel2.setText("Bienvenu dans le Sesame");
+        jLabel2.setText("Bienvenu dans le Sesame Invité");
         jLabel2.setToolTipText("");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(80, 80, 80)
                 .addComponent(jLabel2)
-                .addGap(101, 101, 101))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(29, Short.MAX_VALUE)
+                .addContainerGap(20, Short.MAX_VALUE)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(15, 15, 15))
         );
 
         jPanel3.setBackground(new java.awt.Color(51, 0, 255));
@@ -174,11 +180,6 @@ public class HomeScreen extends javax.swing.JFrame {
 
         fonctions_jMenu.setText("Fonctions");
         fonctions_jMenu.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
-        /*fonctions_jMenu.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                fonctions_jMenuMouseReleased(evt);
-            }
-        });*/
 
         acceder_jMenuItem.setText("Acceder");
         acceder_jMenuItem.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -197,30 +198,15 @@ public class HomeScreen extends javax.swing.JFrame {
         fonctions_jMenu.add(partager_jMenuItem);
 
         supprimer_jMenuItem.setText("Supprimer les accès");
-        supprimer_jMenuItem.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                supprimerMouseReleased(evt);
-            }
-        });
         fonctions_jMenu.add(supprimer_jMenuItem);
 
         rattacher_jMenuItem.setText("Rattacher un Periphérique");
-        rattacher_jMenuItem.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                rattacherMouseReleased(evt);
-            }
-        });
         fonctions_jMenu.add(rattacher_jMenuItem);
 
         jMenuBar.add(fonctions_jMenu);
 
         systeme_jMenu.setText("Systeme");
         systeme_jMenu.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
-        /*systeme_jMenu.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                systeme_jMenuActionPerformed(evt);
-            }
-        });*/
 
         redemarrer_jMenuItem.setText("Redemarrer");
         redemarrer_jMenuItem.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -228,7 +214,6 @@ public class HomeScreen extends javax.swing.JFrame {
                 redemarrerMouseReleased(evt);
             }
         });
-
         systeme_jMenu.add(redemarrer_jMenuItem);
 
         mettreEnVeille_jMenuItem.setText("Mettre en veille");
@@ -277,6 +262,10 @@ public class HomeScreen extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Methode : redemarrerMouseReleased()
+     * @param evt 
+     */
     private void redemarrerMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_redemarrer_jMenuItemMouseReleased
         close();
         try {
@@ -287,7 +276,10 @@ public class HomeScreen extends javax.swing.JFrame {
         Authentification auth = new Authentification();
         auth.setVisible(true);
     }//GEN-LAST:event_redemarrer_jMenuItemMouseReleased
-
+    /**
+     * Methode : mettreEnVeilleMouseReleased()
+     * @param evt 
+     */
     private void mettreEnVeilleMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mettreEnVeille_jMenuItemMouseReleased
         //this.EXIT_ON_CLOSE;
     }//GEN-LAST:event_mettreEnVeille_jMenuItemMouseReleased
@@ -297,7 +289,7 @@ public class HomeScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_arreter_jMenuItemMouseReleased
 
     /**
-     * Methode acceder_jMenuItemMouseReleased 
+     * Methode accederMouseReleased 
      * this methode allows you to acces to your gate by the Sesame
      * @param evt 
      */
@@ -305,19 +297,7 @@ public class HomeScreen extends javax.swing.JFrame {
         // Acceder     
         ManageAcces manage_acces = new ManageAcces ();
         manage_acces.setVisible(true);
-    } 
-
-    /**
-     * Methode partager_jMenuItemMouseReleased 
-     * this methode allows you to share the acces of your gate with 
-     * others Sesame User by your Sesame.
-     * @param evt 
-     */
-    private void partagerMouseReleased(java.awt.event.MouseEvent evt) {   
-       // Partager les accès
-       ManageSharedDevice share = new ManageSharedDevice();
-       share.setVisible(true);
-    } 
+    }
 
     /**
      * Methode rattacher_jMenuItemMouseReleased 
@@ -342,7 +322,7 @@ public class HomeScreen extends javax.swing.JFrame {
 
     
     /**
-     * Methode afficherInfoAdministrateur_jMenuItemMouseReleased 
+     * Methode afficherInfoAdministrateurMouseReleased 
      * this methode allows you to print all the information about the owner
      * @param evt 
      */
@@ -351,6 +331,19 @@ public class HomeScreen extends javax.swing.JFrame {
         admin.setVisible(true);
         
     }//GEN-LAST:event_afficherInfoAdministrateur_jMenuItemMouseReleased
+
+    /**
+     * Methode partager_jMenuItemMouseReleased 
+     * this methode allows you to share the acces of your gate with 
+     * others Sesame User by your Sesame.
+     * @param evt 
+     */
+    private void partagerMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_partagerMouseReleased
+        // TODO add your handling code here:
+        // Partager les accès
+        ManageSharedDevice share = new ManageSharedDevice();
+        share.setVisible(true);
+    }//GEN-LAST:event_partagerMouseReleased
    
     /**
      * @param args the command line arguments
