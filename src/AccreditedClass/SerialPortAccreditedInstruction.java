@@ -19,11 +19,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Date;
 
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JPasswordField;
-
 /**
  *
  * @author LamineBA
@@ -38,16 +33,6 @@ public class SerialPortAccreditedInstruction extends SerialPortGPIO{
     public SerialPortAccreditedInstruction(int baudrate){
         super(baudrate);
         
-        OwnerInformation user = new OwnerInformation();
-        System.out.println(user);
-        // Make the Serialization for OwnerInformation 
-        File file = new File("owner_information.ser");
-        try(FileOutputStream fileOut = new FileOutputStream(file); ObjectOutputStream out = new ObjectOutputStream(fileOut)) {
-            out.writeObject(user);
-        }catch(IOException i){
-            System.out.println("Exception for OwnerInformation");
-        }
-        
         int count = 0;
         while(count<5){
             try {
@@ -61,12 +46,13 @@ public class SerialPortAccreditedInstruction extends SerialPortGPIO{
     
     /**
      * Methode : analyzeDataReceived => Traitement des données recu
+     * @param received_data
      * @throws java.lang.InterruptedException
      */
     @Override
-    public void analyzeDataReceived() throws InterruptedException{
-
-        switch (super.getLastReceivedData()) {
+    public void analyzeDataReceived(String received_data) throws InterruptedException{
+        super.setLastReceivedData(received_data);
+        switch (received_data) {
             case BONJOUR:
                 System.out.println("|BONJOUR| recu dans la classe herité");
                 Thread.sleep(100);
@@ -74,6 +60,7 @@ public class SerialPortAccreditedInstruction extends SerialPortGPIO{
                 break;
                 
             case SCAN_SESAME_ENVIRONNANT:
+                //reception_buffer = received_data;
                 System.out.println("|SCAN_SESAME_ENVIRONNANT| recu dans la classe herité");
                 Thread.sleep(100);
                 super.sendData("RPi_GUEST");
@@ -115,7 +102,7 @@ public class SerialPortAccreditedInstruction extends SerialPortGPIO{
                 System.out.println("Reception de |BEGIN| dans la classe hérité");
                 Thread.sleep(100);
                 // reset the buffer
-                super.setBufferReception("");
+                super.resetBufferReception();
                 super.setSavingFlag(true);
                 break;
                 
@@ -226,8 +213,11 @@ public class SerialPortAccreditedInstruction extends SerialPortGPIO{
         System.out.println("<--- BEGIN OF CALLING checkBufferData() methode --->");
         
         // Get the data saved in the buffer
+        System.out.println("Contents of the buffer : " + super.getBufferReception());
         String [] data_in = SerialPortGPIO.extractBufferData(super.getBufferReception());
         
+        // reset the reception buffer
+        super.resetBufferReception();
         
         // Extract the first and last data to check the kind of request
         String first_data = data_in[0];

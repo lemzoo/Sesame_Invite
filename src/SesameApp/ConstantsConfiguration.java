@@ -99,7 +99,7 @@ public interface ConstantsConfiguration {
     final String INFORMATION_ACCREDITE_ENREGISTRE_CORRECTEMENT = "IAEC_03";
     final String INFORMATION_ACCREDITE_DONNEES_ERONNEES        = "IADE_03";
     
-    final String DEMANDE_INFORMATION_SESAME_DOORS      = "DESD_03";
+    final String DEMANDE_INFORMATION_SESAME_DOORS      = "DISD_03";
     
     final String DEBUT_ENVOIE_INFORMATION_SESAME_DOORS = "DEISD_03";
     final String FIN_ENVOIE_INFORMATION_SESAME_DOORS   = "FEISD_03";
@@ -125,4 +125,102 @@ public interface ConstantsConfiguration {
     
     final String BEGIN = "BGN_01";
     final String END = "END_01";
+    
+    
+    
+    /**
+     * Methode extractBufferData() allows you to extract all the data saved in the serial buffer
+     * @param string_buffer is the input of the methode which contains the received data
+     * @return data_out[] is the data arranged on the array String
+     */
+    /*public static String [] extractBufferData(String string_buffer){
+        System.out.println("<--- BEGIN OF THE extractBufferData() methode --->");
+        
+        String [] data_in = new String[100];
+        String [] data_out;
+        
+        System.out.println("Buffer = " + string_buffer);
+        
+        boolean flag_buffer_content = string_buffer.length()>0;
+        
+        //Check the data saved in the buffer
+        int buffer_size = 0;       
+        
+        // Put the buffer contents in the char Array
+        char[] charArray = null; //string_buffer.toCharArray();
+        String temp = "";
+        
+        if (flag_buffer_content){
+            //Check the data saved in the buffer
+            buffer_size = string_buffer.length();       
+
+            // Put the buffer contents in the char Array
+            charArray = string_buffer.toCharArray();
+        }
+        else{
+            System.out.println("Le buffer est vide");
+            String str_default = "02AB02CD06EFGHIJ";
+            buffer_size = str_default.length();
+            charArray = str_default.toCharArray();
+        }
+        
+        // Extract the first data which contains 7 charactere
+        int count = 0;
+        int size = 0;
+
+        // Extract the first size of the first frame
+        temp = String.valueOf(charArray[count]) + String.valueOf(charArray[count+1]);
+        count = count + 2;
+        System.out.println("Premier Cast = " + temp);
+        int size_charactere = 0;
+        try{
+            size_charactere = Integer.parseInt(temp);
+        }catch(NumberFormatException ex){
+            size_charactere = 0;
+            System.out.println("Error while trying to convert String to Integer. The data is : " + temp);
+        }
+        
+        boolean flag_extraction = true;
+        while ((count <= buffer_size-1) && flag_extraction){
+            temp = "";
+            for (int j=count; j<(count + size_charactere); j++){
+                char char_ = charArray[j];
+                temp = temp + String.valueOf(char_);
+                //System.out.println("Temp = " + temp);
+            }
+            data_in[size] = temp;
+            //System.out.println("Data extracted["+size+"] = " + data_in[size]);
+            size ++;
+            
+            // Check if you have got the end of the buffer to stop extracting
+            if (buffer_size - (count+size_charactere) <=1){
+                flag_extraction = false;
+            }
+            else{
+                temp = String.valueOf(charArray[count + size_charactere]) + String.valueOf(charArray[count + size_charactere+1]);                
+                
+                //System.out.println("Size futur data = " + temp);
+                count = count + size_charactere + 2;
+                try{
+                    size_charactere = Integer.parseInt(temp);
+                }catch(NumberFormatException ex){
+                    size_charactere = 0;
+                    System.out.println("Error while trying to convert String to Integer " + ex.getMessage());
+                }
+            }
+            
+        }
+        
+        int count_data = 0;
+        while(data_in[count_data]!= null){
+            count_data ++;
+        }
+        data_out = new String[count_data];
+        System.arraycopy(data_in, 0, data_out, 0, count_data);
+        
+        System.out.println("<--- END OF THE extractBufferData() methode --->");
+        
+        return data_out; 
+    }
+    */
 }
