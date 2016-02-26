@@ -33,7 +33,7 @@ public class HomeScreen extends javax.swing.JFrame {
     public HomeScreen() {
         initComponents();
         owner_jLabel.setText("Proprietaire : " + "Lamine BA");
-        serial_port_accredited = new SerialPortAccreditedInstruction(115200);
+        serial_port_accredited = new SerialPortAccreditedInstruction(9600);
         this.clock();
     }
 

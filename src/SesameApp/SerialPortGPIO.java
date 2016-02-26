@@ -83,14 +83,11 @@ public class SerialPortGPIO implements ConstantsConfiguration{
     }
     
     /**
-     * Methode : setBufferReception(String data)
-     * @param data
+     * Methode setBufferReception() allows you to write the received data in the buffer which you want
+     * @param data : is the data which received by the serial port
      */
     public void setBufferReception (String data){
-        int len = buffer.length();
-        buffer.insert(len, data);
-        
-        //this.buffer = data;
+        buffer.append(data);
     }
     
     /**
@@ -98,7 +95,6 @@ public class SerialPortGPIO implements ConstantsConfiguration{
      * @return buffer 
      */
     public String getBufferReception (){
-        //return buffer;
         return buffer.toString();
     }
 
@@ -144,15 +140,6 @@ public class SerialPortGPIO implements ConstantsConfiguration{
     public void setReceivedData(int pos, String [] buffer, String data_received){
         buffer[pos] = data_received;
         System.out.println("Data saved : " + data_received + " pos = " + pos);
-    }
-    
-    /**
-     * Methode setBufferData() allows you to write the received data in the buffer which you want
-     * @param data_received : is the data which received by the serial port
-     */
-
-    public void setBufferData(String data_received){
-        buffer.append(data_received);
     }
     
     /**

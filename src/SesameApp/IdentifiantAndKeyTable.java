@@ -71,6 +71,34 @@ public class IdentifiantAndKeyTable implements java.io.Serializable {
     
     /**
      * Methode : getCorrespondingKey() allow you to get the corresponding to the identifiant passed on the argument
+     * @param user : is the user object that you want to get the key
+     * @return key if the device id passed is available on the table
+     */
+    public String getCorrespondingKey(OwnerInformation user){
+        String key = "";
+        if (user != null){
+            for (int i=0; i<table_device_info.size(); i++){
+                OwnerInformation user_temp = table_device_info.get(i).getOwnerInformation();
+                if (compareOwnerInformation(user_temp, user)){
+                    key = table_device_info.get(i).getDeviceKey();
+                    System.out.println("The corresponding key to this User = '" + user.getOwnerFirstName() + " " + user.getOwnerLastName() + " is = '" + key + "'");
+                    i = table_device_info.size();
+                }
+                else{
+                    System.err.println("L'utilisateur en question n'existe pas dans la table id_key");
+                    key = null;
+                }
+            }
+        }
+        else{
+            System.err.println("L'argument de OwnerInformation est null");
+            key = null;
+        }
+        return key;
+    }
+    
+    /**
+     * Methode : getCorrespondingKey() allow you to get the corresponding to the identifiant passed on the argument
      * @param device_id : is the id of the device that you want to get the key
      * @return key if the device id passed is available on the table
      */
@@ -127,7 +155,8 @@ public class IdentifiantAndKeyTable implements java.io.Serializable {
             while (count < table_device_info.size()){
                 String device_number = String.format("%02d", (count +1));
                 chaine += "<---------------------------------------------------->" + "\n";
-                chaine += "Device Number : " + device_number +  "\n";  
+                chaine += "Device Number : " + device_number +  "\n"; 
+                chaine += table_device_info.get(count).getOwnerInformation().toString() + "\n";
                 chaine += table_device_info.get(count).getDeviceLinkingInformation().toString() + "\n"; 
                 chaine += "Device Id = " + table_device_info.get(count).getDeviceId() + "\n"; 
                 chaine += "Device Key = " + table_device_info.get(count).getDeviceKey() + "\n";
@@ -136,6 +165,54 @@ public class IdentifiantAndKeyTable implements java.io.Serializable {
         }
         chaine += "<---------------------------------------------------->";
         return chaine;
+    }
+    
+    /**
+     * Methode : compareOwnerInformation() allow you to compare if two OwnerInformation are equal or not
+     * @param first_object
+     * @param second_object
+     * @return true if the objects are equal. if not; it returns false
+     */
+    private boolean compareOwnerInformation(OwnerInformation first_object , OwnerInformation second_object){
+        boolean compare_flag = false;
+        boolean check_arg = false;
+        boolean check_object_nature = false;
+        
+        // Check if the object is not null
+        if (first_object != null && second_object != null)
+            check_arg = true;
+        else
+            check_arg = false;
+        
+        // Check if the object is instance of OwnerInformation
+        if (first_object instanceof OwnerInformation && second_object instanceof OwnerInformation)
+            check_object_nature = true;
+        else
+            check_object_nature = false;
+        
+        // Compare the attribut of the two object
+        if (check_arg && check_object_nature){
+            int i_compare_birthday = first_object.getOwnerBirthdayDate().compareTo(second_object.getOwnerBirthdayDate());
+            boolean b_compare_birthday = i_compare_birthday == 0;
+            
+            boolean b_compare_other = false;              
+            b_compare_other = first_object.getOwnerFirstName().equals(second_object.getOwnerFirstName())  &&
+                              first_object.getOwnerLastName().equals(second_object.getOwnerLastName())      &&
+                              first_object.getOwnerPhoneNumber().equals(second_object.getOwnerPhoneNumber()) && 
+                              first_object.getOwnerEmailAddress().equals(second_object.getOwnerEmailAddress()) &&
+                              first_object.getOwnerStreetNumber() == second_object.getOwnerStreetNumber()     &&
+                              first_object.getOwnerStreetName().equals(second_object.getOwnerStreetName())   &&
+                              first_object.getOwnerCodePostale() == second_object.getOwnerCodePostale()     &&
+                              first_object.getOwnerCity().equals(second_object.getOwnerCity())             &&
+                              first_object.getOwnerCountry().equals(second_object.getOwnerCountry())      &&
+                              first_object.getOwnerIdentifiant().equals(second_object.getOwnerIdentifiant());
+                
+            compare_flag = b_compare_birthday && b_compare_other;
+        }
+        else
+            compare_flag =  false;
+        
+        return compare_flag;
     }
     
     private static final long serialVersionUID = 42L; 

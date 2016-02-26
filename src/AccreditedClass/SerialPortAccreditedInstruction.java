@@ -11,13 +11,7 @@ import SharingGUI.*;
 import SesameApp.*;
 import HomeGUI.*;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.util.Date;
+import java.io.*;
 
 /**
  *
@@ -617,7 +611,7 @@ public class SerialPortAccreditedInstruction extends SerialPortGPIO{
     }
     
     public static void main(String [] args){
-        SerialPortAccreditedInstruction test = new SerialPortAccreditedInstruction(115200);
+        SerialPortAccreditedInstruction test = new SerialPortAccreditedInstruction(9600);
         int count = 0;
         while (true){
             if (count<5){
